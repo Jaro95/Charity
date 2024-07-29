@@ -7,25 +7,25 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pl.coderslab.charity.domain.user.User;
-import pl.coderslab.charity.domain.user.UserService;
+import pl.coderslab.charity.domain.user.UserRepository;
 
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class SpringDataUserDetailsService implements UserDetailsService {
 
-    private final UserService userService;
+    private final UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Optional<User> user = userService.findByEmail(email);
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        return new CurrentUser(user.get().getEmail(), user.get().getPassword(),
-                user.get().getRole().stream()
+        return new CurrentUser(user.getEmail(), user.getPassword(),
+                user.getRole().stream()
                         .map(role -> new SimpleGrantedAuthority(role.getName()))
                         .collect(Collectors.toList())
-                ,user.get());
+                ,user);
     }
 }
