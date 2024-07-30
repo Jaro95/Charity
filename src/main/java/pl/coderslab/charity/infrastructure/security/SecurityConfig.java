@@ -40,7 +40,7 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                                .requestMatchers("/login", "/rest/users/registration").permitAll()
+                                .requestMatchers("/login", "/rest/users/registration","/rest/users/verification").permitAll()
                                 .requestMatchers(HttpMethod.DELETE, "/rest/categories/**").hasRole("SUPER_ADMIN")
                                 .requestMatchers(HttpMethod.POST, "/rest/categories/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.PUT, "/rest/categories/**").hasRole("ADMIN")

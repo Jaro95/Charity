@@ -6,10 +6,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.acls.model.NotFoundException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.NotAcceptableStatusException;
 import pl.coderslab.charity.domain.user.User;
 import pl.coderslab.charity.domain.user.UserRepository;
 
@@ -25,6 +27,7 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationResponse authenticate(UserLoginRequest userLoginRequest) {
+
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         userLoginRequest.username(),
@@ -32,6 +35,9 @@ public class AuthenticationService {
                 )
         );
         User user = repository.findByEmail(userLoginRequest.username()).orElseThrow(() -> new UsernameNotFoundException("Not found user"));
+        if (!user.isEnabled()) {
+            return new AuthenticationResponse(null,null,"The account is not activated");
+        }
         String accessToken = jwtService.generateAccessToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
         revokeAllTokenByUser(user);
