@@ -1,4 +1,4 @@
-package pl.coderslab.charity.adapter.controllerToChangeOnRest;
+package pl.coderslab.charity.adapter.changeOnRest;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package pl.coderslab.charity.adapter.controllerForJsp;
+package pl.coderslab.charity.adapter.forJsp;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

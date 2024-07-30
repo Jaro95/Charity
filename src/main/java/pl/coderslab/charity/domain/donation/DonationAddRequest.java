@@ -1,12 +1,14 @@
 package pl.coderslab.charity.domain.donation;
 
 import jakarta.validation.constraints.*;
+import lombok.Builder;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+@Builder
 public record DonationAddRequest
         (
         @NotNull

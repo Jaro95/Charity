@@ -1,9 +1,11 @@
 package pl.coderslab.charity.domain.donation;
 
 import jakarta.validation.constraints.*;
+import lombok.Builder;
 
 import java.util.List;
 
+@Builder
 public record DonationUpdateRequest
         (
                 @Min(value = 1)

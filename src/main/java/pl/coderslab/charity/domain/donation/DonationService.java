@@ -27,9 +27,9 @@ public class DonationService {
 
     public List<Donation> getAllDonations() {
         List<Donation> donations = donationRepository.findAll();
-        for (Donation donation : donations) {
-            donation.getUser().getRole().forEach(role -> role.getUser().clear());
-        }
+//        for (Donation donation : donations) {
+//            donation.getUser().getRole().forEach(role -> role.getUser().clear());
+//        }
         return donations;
     }
 
@@ -41,7 +41,7 @@ public class DonationService {
 
     public DonationAddRequest addDonation(DonationAddRequest donationAddRequest) {
         List<Category> categories = new ArrayList<>();
-        donationAddRequest.categoryIdList().forEach(c -> categories.add(categoryRepository.findById(c).orElseThrow(IllegalArgumentException::new)));
+        donationAddRequest.categoryIdList().forEach(c -> categories.add(categoryRepository.findById(c).orElseThrow()));
         donationRepository.save(Donation.builder()
                 .quantity(donationAddRequest.quantity())
                 .category(categories)
@@ -124,7 +124,7 @@ public class DonationService {
 
             donationRepository.save(d);
             log.info("Updated donation: {}", d);
-            d.getUser().getRole().forEach(role -> role.getUser().clear());
+            //d.getUser().getRole().forEach(role -> role.getUser().clear());
         });
 
         return donation;
@@ -133,15 +133,8 @@ public class DonationService {
     public Optional<Donation> deleteDonation(Long id) {
         Optional<Donation> donation = donationRepository.findById(id);
         donation.ifPresent(d -> {
-            List<Category> categoriesDonationToDelete = new ArrayList<>(d.getCategory());
-            User userDonationToDelete = d.getUser();
-            userDonationToDelete.getRole().forEach(role -> role.getUser().clear());
-            d.getCategory().clear();
-            d.getUser().getRole().forEach(role -> role.getUser().clear());
             donationRepository.delete(d);
             log.info("Deleted donation:\n{}", d);
-            donation.get().setUser(userDonationToDelete);
-            donation.get().setCategory(categoriesDonationToDelete);
         });
         return donation;
     }
