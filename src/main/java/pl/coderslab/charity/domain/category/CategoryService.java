@@ -28,7 +28,6 @@ public class CategoryService {
                 .name(categoryAddRequest.name())
                 .build());
         log.info("Added new category:\n{}\n{}", categoryAddRequest.name());
-
         return categoryAddRequest;
     }
 
@@ -39,7 +38,7 @@ public class CategoryService {
             Optional.ofNullable(categoryRequest.name()).ifPresent(name ->
                     c.setName(c.getName().equals(name) ? c.getName() : name));
             categoryRepository.save(c);
-            log.info("Updated category:\n {}", c.toString());
+            log.info("Updated category:\n {}", c);
         });
         return category;
     }
@@ -48,7 +47,7 @@ public class CategoryService {
         Optional<Category> category = categoryRepository.findById(id);
         category.ifPresent(c -> {
             categoryRepository.delete(c);
-            log.info("Deleted category:\n {}", c.toString());
+            log.info("Deleted category:\n {}", c);
         });
         return category;
     }

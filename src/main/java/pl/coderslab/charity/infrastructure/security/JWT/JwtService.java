@@ -20,8 +20,8 @@ public class JwtService {
     private final TokenRepository tokenRepository;
 
     private final String SECRET_KEY = "4e8cd23f988f16dc350991c76b3b8666c269ccc5a7ba61d628f734e21674903b";
-    private long accessTokenExpire = 86400000;
-    private long refreshTokenExpire = 604800000;
+    private final long accessTokenExpire = 86400000;
+    private final long refreshTokenExpire = 604800000;
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);

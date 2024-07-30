@@ -1,6 +1,6 @@
 package pl.coderslab.charity.domain.user;
 
-import org.springframework.validation.BindingResult;
+import pl.coderslab.charity.infrastructure.security.JWT.UserLoginRequest;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,4 +24,6 @@ public interface UserService {
     EmailCheckEmailResponse resetPasswordCheckEmail(String email);
     ResetPasswordCheckTokenResponse resetPasswordCheckToken(ResetPasswordCheckTokenRequest resetPasswordCheckTokenRequest);
     ResetPasswordCheckTokenResponse resetPassword(ResetPasswordRequest resetPasswordRequest);
+    Optional<User> updateUser(Long id, UserRequest userRequest);
+    Optional<User> deleteUser(Long id);
 }

@@ -41,7 +41,7 @@ public class InstitutionService {
                         i.setDescription(i.getDescription().equals(description) ? i.getDescription() : description)
                         );
                 institutionRepository.save(i);
-                log.info("Updated institution: {}", i.toString());
+                log.info("Updated institution: {}", i);
 
         });
         return institution;
@@ -51,7 +51,7 @@ public class InstitutionService {
         Optional<Institution> institution = institutionRepository.findById(id);
         institution.ifPresent(i -> {
             institutionRepository.delete(i);
-            log.info("Deleted institution: {}", i.toString());
+            log.info("Deleted institution: {}", i);
         });
         return institution;
     }

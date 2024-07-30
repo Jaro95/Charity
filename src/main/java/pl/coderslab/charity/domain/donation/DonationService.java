@@ -58,7 +58,7 @@ public class DonationService {
                 .createdTime(LocalTime.now().withSecond(0).withNano(0))
                 .user(userRepository.findById(donationAddRequest.userId()).orElseThrow(IllegalArgumentException::new))
                 .build());
-        log.info("Added new donation:\n{}", donationAddRequest.toString());
+        log.info("Added new donation:\n{}", donationAddRequest);
         return donationAddRequest;
     }
 
@@ -123,7 +123,7 @@ public class DonationService {
                     );
 
             donationRepository.save(d);
-            log.info("Updated donation: {}", d.toString());
+            log.info("Updated donation: {}", d);
             d.getUser().getRole().forEach(role -> role.getUser().clear());
         });
 
@@ -139,8 +139,7 @@ public class DonationService {
             d.getCategory().clear();
             d.getUser().getRole().forEach(role -> role.getUser().clear());
             donationRepository.delete(d);
-            log.info("Deleted donation:\n{}", d.toString());
-            System.out.println(categoriesDonationToDelete.toString());
+            log.info("Deleted donation:\n{}", d);
             donation.get().setUser(userDonationToDelete);
             donation.get().setCategory(categoriesDonationToDelete);
         });

@@ -2,7 +2,6 @@ package pl.coderslab.charity.infrastructure.security.JWT;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.stereotype.Service;
 import pl.coderslab.charity.domain.user.User;
 
 @Getter

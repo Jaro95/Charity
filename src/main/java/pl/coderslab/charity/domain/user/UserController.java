@@ -50,4 +50,14 @@ public class UserController {
     public ResetPasswordCheckTokenResponse postRecoveryPassword(@RequestBody @Valid ResetPasswordRequest resetPasswordRequest) {
         return userService.resetPassword(resetPasswordRequest);
     }
+
+    @PutMapping("/{id}")
+    public UserResponse deleteUser(@PathVariable Long id, @RequestBody UserRequest userRequest) {
+        return new UserResponse(userService.updateUser(id, userRequest));
+    }
+
+    @DeleteMapping("/{id}")
+    public UserResponse deleteUser(@PathVariable Long id) {
+        return new UserResponse(userService.deleteUser(id));
+    }
 }

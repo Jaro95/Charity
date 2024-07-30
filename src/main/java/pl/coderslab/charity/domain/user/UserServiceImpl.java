@@ -139,44 +139,44 @@ public class UserServiceImpl implements UserService {
     @Override
     public RegistrationResponse registrationUser(RegistrationRequest registrationRequest) {
         if (!registrationRequest.getPassword().equals(registrationRequest.getRepeatPassword())) {
-            return new RegistrationResponse(false,"Passwords are not the same", registrationRequest);
+            return new RegistrationResponse(false, "Passwords are not the same", registrationRequest);
         }
         if (userRepository.findByEmail(registrationRequest.getEmail()).isPresent()) {
-            return new RegistrationResponse(false,"Email is already taken", registrationRequest);
+            return new RegistrationResponse(false, "Email is already taken", registrationRequest);
         }
         saveUser(registrationRequest);
         log.info("Added new user:\nEmail:{}\nName:{}\nLast name:{}", registrationRequest.getEmail(),
-                registrationRequest.getFirstName(),registrationRequest.getLastName());
-        return new RegistrationResponse(true,"Registration successful", registrationRequest);
+                registrationRequest.getFirstName(), registrationRequest.getLastName());
+        return new RegistrationResponse(true, "Registration successful", registrationRequest);
     }
 
     @Override
     public ActivateUserResponse activateUser(ActivateUserRequest activateUserRequest) {
         Optional<User> user = findByToken(activateUserRequest.token());
         if (user.isEmpty()) {
-            return new ActivateUserResponse(false,"Token invalid or expired");
+            return new ActivateUserResponse(false, "Token invalid or expired");
         }
         user.get().setEnabled(true);
         user.get().setToken("verified");
         updateUser(user.get());
-        return new ActivateUserResponse(true,"The account has been activated");
+        return new ActivateUserResponse(true, "The account has been activated");
     }
 
     @Override
     public EmailCheckEmailResponse resetPasswordCheckEmail(String email) {
         Optional<User> user = findByEmail(email);
         if (user.isEmpty()) {
-            return new EmailCheckEmailResponse(false,"Wrong Email");
+            return new EmailCheckEmailResponse(false, "Wrong Email");
         }
         sendRecoveryPasswordEmail(email);
-        return new EmailCheckEmailResponse(true,"A password reset link has been sent to your email address");
+        return new EmailCheckEmailResponse(true, "A password reset link has been sent to your email address");
     }
 
     @Override
     public ResetPasswordCheckTokenResponse resetPasswordCheckToken(ResetPasswordCheckTokenRequest resetPasswordCheckTokenRequest) {
         Optional<RecoveryPassword> recoveryPassword = recoveryPasswordRepository.findByTokenRecoveryPassword(resetPasswordCheckTokenRequest.token());
         if (recoveryPassword.isEmpty()) {
-            return new ResetPasswordCheckTokenResponse(false,"Token is invalid");
+            return new ResetPasswordCheckTokenResponse(false, "Token is invalid");
         }
         return new ResetPasswordCheckTokenResponse(true, "Token is valid");
     }
@@ -184,19 +184,68 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResetPasswordCheckTokenResponse resetPassword(ResetPasswordRequest resetPasswordRequest) {
         Optional<RecoveryPassword> recoveryPassword = recoveryPasswordRepository.findByTokenRecoveryPassword(resetPasswordRequest.token());
+
         if (recoveryPassword.isEmpty()) {
-            return new ResetPasswordCheckTokenResponse(false,"Token is invalid");
+            return new ResetPasswordCheckTokenResponse(false, "Token is invalid");
         }
         if (!resetPasswordRequest.password().equals(resetPasswordRequest.repeatPassword())) {
-            return new ResetPasswordCheckTokenResponse(false,"Passwords are not the same");
+            return new ResetPasswordCheckTokenResponse(false, "Passwords are not the same");
         }
         resetPassword(recoveryPassword.get().getEmail(), resetPasswordRequest.password());
-        return new ResetPasswordCheckTokenResponse(true,"The password has been changed");
+        return new ResetPasswordCheckTokenResponse(true, "The password has been changed");
+    }
+
+    @Override
+    public Optional<User> updateUser(Long id, UserRequest userRequest) {
+        Optional<User> user = userRepository.findById(id);
+        Set<Role> roles = new HashSet<>();
+        user.ifPresent(u -> {
+            Optional.ofNullable(userRequest.email()).ifPresent(email ->
+                    u.setEmail(u.getEmail().equals(email) ? u.getEmail() : email)
+            );
+            Optional.ofNullable(userRequest.name()).ifPresent(name ->
+                    u.setName(u.getName().equals(name) ? u.getName() : name)
+            );
+            Optional.ofNullable(userRequest.lastName()).ifPresent(lastName ->
+                    u.setLastName(u.getLastName().equals(lastName) ? u.getLastName() : lastName)
+            );
+            Optional.ofNullable(userRequest.password()).ifPresent(password -> {
+                if(!passwordEncoder.matches(password,u.getPassword())) {
+                    u.setPassword(passwordEncoder.encode(password));
+                }
+            });
+            Optional.ofNullable(userRequest.enabled()).ifPresent(enabled ->
+                    u.setEnabled(u.isEnabled() == enabled ? u.isEnabled() : enabled)
+            );
+            Optional.ofNullable(userRequest.roleIdList())
+                    .filter(roleIdList -> !roleIdList.isEmpty())
+                    .ifPresent(roleIdList -> roleIdList.forEach(roleId ->
+                            roles.add(roleRepository.findById(roleId).orElseThrow(IllegalArgumentException::new)))
+                    );
+            if(!roles.isEmpty()) {
+                u.setRole(u.getRole().equals(roles) ? u.getRole() : roles);
+            }
+            userRepository.save(u);
+            log.info("Updated user: {}", u);
+            u.getRole().forEach(role -> role.getUser().clear());
+        });
+        return user;
+    }
+
+    @Override
+    public Optional<User> deleteUser(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        user.ifPresent(u -> {
+            u.getRole().clear();
+            userRepository.delete(u);
+            log.info("User deleted: {}", u);
+        });
+        return user;
     }
 
     public void deleteOccurrenceEmailInListReset(String email) {
         Optional<RecoveryPassword> validOccurrenceEmail = recoveryPasswordRepository.findByEmail(email);
-        validOccurrenceEmail.ifPresent( e ->
+        validOccurrenceEmail.ifPresent(e ->
                 recoveryPasswordRepository.delete(validOccurrenceEmail.get())
         );
     }

@@ -3,6 +3,7 @@ package pl.coderslab.charity.infrastructure.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -11,14 +12,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import pl.coderslab.charity.infrastructure.security.JWT.CustomLogoutHandler;
 import pl.coderslab.charity.infrastructure.security.JWT.JwtAuthenticationFilter;
 
@@ -41,25 +40,33 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        //.requestMatchers("/**").permitAll()
-                        .requestMatchers("/login", "/rest/users/registration").permitAll()
-                        .requestMatchers("/rest/categories/add").hasRole("SUPER_ADMIN")
-//                        .requestMatchers("/charity", "/charity/login", "/charity/registration").permitAll()
-//                        .requestMatchers("/charity/donation/**").hasAnyRole("USER", "ADMIN", "SUPER_ADMIN")
+                                .requestMatchers("/login", "/rest/users/registration").permitAll()
+                                .requestMatchers(HttpMethod.DELETE, "/rest/categories/**").hasRole("SUPER_ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/rest/categories/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/rest/categories/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/rest/institutions/**").hasRole("SUPER_ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/rest/institutions/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/rest/institutions/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/rest/users/**").hasRole("SUPER_ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/rest/users/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/rest/users/**").hasRole("SUPER_ADMIN")
+                                //.requestMatchers("/**").permitAll()
+//                        .requestMatchers("/**", "/charity/login", "/charity/registration").permitAll()
+//                        .requestMatchers("/charity/**").hasAnyRole("USER", "ADMIN", "SUPER_ADMIN")
 //                        .requestMatchers("/charity/admin/**").hasAnyRole("ADMIN", "SUPER_ADMIN")
 //                        .requestMatchers("/images/**", "/css/**", "/js/**", "/WEB-INF/views/**").permitAll()
-                        .anyRequest().authenticated()
+                                .anyRequest().authenticated()
                 )
                 .userDetailsService(userDetailsService)
-                .sessionManagement(session->session
+                .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(
-                        e->e.accessDeniedHandler(
-                                        (request, response, accessDeniedException)->response.setStatus(403)
+                        e -> e.accessDeniedHandler(
+                                        (request, response, accessDeniedException) -> response.setStatus(403)
                                 )
                                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
-                .logout(l->l
+                .logout(l -> l
                         .logoutUrl("/logout")
                         .addLogoutHandler(logoutHandler)
                         .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext()
@@ -91,6 +98,7 @@ public class SecurityConfig {
             response.sendRedirect("/charity/login?error=true");
         };
     }
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
