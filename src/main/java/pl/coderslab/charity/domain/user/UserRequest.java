@@ -1,9 +1,11 @@
 package pl.coderslab.charity.domain.user;
 
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 
 import java.util.Set;
 
+@Builder
 public record UserRequest(
         @Size(max = 50)
         String email,

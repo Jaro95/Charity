@@ -116,7 +116,7 @@ public class DonationController {
             model.addAttribute("messageError", "Hasła nie są takie same");
             return "application/editPassword";
         }
-        userService.updateUser(currentUser.getUser(),editPassword.getPassword());
+        userService.updatePasswordUser(currentUser.getUser(),editPassword.getPassword());
         redirectAttributes.addFlashAttribute("message", "Edycja przebiegła pomyślnie");
         return "redirect:/charity/donation/profile";
     }

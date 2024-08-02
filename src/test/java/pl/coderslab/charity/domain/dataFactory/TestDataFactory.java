@@ -4,6 +4,8 @@ import pl.coderslab.charity.domain.category.Category;
 import pl.coderslab.charity.domain.donation.Donation;
 import pl.coderslab.charity.domain.donation.DonationAddRequest;
 import pl.coderslab.charity.domain.institution.Institution;
+import pl.coderslab.charity.domain.user.RecoveryPassword;
+import pl.coderslab.charity.domain.user.RegistrationRequest;
 import pl.coderslab.charity.domain.user.User;
 import pl.coderslab.charity.infrastructure.security.Role;
 
@@ -31,8 +33,12 @@ public class TestDataFactory {
                 .build();
     }
 
-    public static Set<Role> createRole() {
-        return Set.of(Role.builder().name("USER").build());
+    public static Set<Role> createRoleList() {
+        return Set.of(createRole());
+    }
+
+    public static Role createRole() {
+        return Role.builder().name("USER").build();
     }
 
     public static User createUser() {
@@ -43,9 +49,18 @@ public class TestDataFactory {
                 .lastName("userLastName")
                 .password("password")
                 .enabled(true)
-                .role(createRole())
+                .role(createRoleList())
                 .token("token")
                 .createdAccount(LocalDateTime.of(2024, 8, 1, 14, 0, 0))
+                .build();
+    }
+
+    public static RegistrationRequest addUser() {
+        return RegistrationRequest .builder()
+                .email("new@u")
+                .firstName("new userName")
+                .lastName("new userLastName")
+                .password("new password")
                 .build();
     }
 
@@ -83,6 +98,15 @@ public class TestDataFactory {
                 .createdDate(LocalDate.of(2024,8,1))
                 .createdTime(LocalTime.of(14, 0, 0))
                 .userId(1L)
+                .build();
+    }
+
+    public static RecoveryPassword createRecoveryPassword() {
+        return RecoveryPassword.builder()
+                .id(1L)
+                .email("u@u")
+                .tokenRecoveryPassword("Recovery Token")
+                .localDateTime(LocalDateTime.of(2024, 8, 1, 14, 0, 0))
                 .build();
     }
 }

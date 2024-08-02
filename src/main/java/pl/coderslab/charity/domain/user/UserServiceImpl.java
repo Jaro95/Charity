@@ -45,11 +45,11 @@ public class UserServiceImpl implements UserService {
                 .enabled(false)
                 .token(UUID.randomUUID().toString())
                 .build());
-        emailService.sendVerificationEmail(user.getEmail(), userRepository.findByEmail(user.getEmail()).get().getToken());
+        emailService.sendVerificationEmail(user.getEmail(), userRepository.findByEmail(user.getEmail()).orElseThrow().getToken());
     }
 
     @Override
-    public void updateUser(User user, String password) {
+    public void updatePasswordUser(User user, String password) {
         if (!passwordEncoder.matches(user.getPassword(), password)) {
             user.setPassword(passwordEncoder.encode(password));
         }
@@ -97,20 +97,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getAllUsers() {
         List<User> users = userRepository.findAll();
-        for (User user : users) {
-            user.getRole().forEach(role -> role.getUser().clear());
-        }
+//        for (User user : users) {
+//            user.getRole().forEach(role -> role.getUser().clear());
+//        }
         return users;
     }
 
     @Override
     public List<User> getUsersWithRole(String role) {
         List<User> users = userRepository.withRole(role);
-        for (User user : users) {
-            for (Role roleUser : user.getRole()) {
-                roleUser.getUser().clear();
-            }
-        }
+//        for (User user : users) {
+//            for (Role roleUser : user.getRole()) {
+//                roleUser.getUser().clear();
+//            }
+//        }
         return users;
     }
 
@@ -141,7 +141,7 @@ public class UserServiceImpl implements UserService {
         if (!registrationRequest.getPassword().equals(registrationRequest.getRepeatPassword())) {
             return new RegistrationResponse(false, "Passwords are not the same", registrationRequest);
         }
-        if (userRepository.findByEmail(registrationRequest.getEmail()).isPresent()) {
+        if (userRepository.findFirstByEmail(registrationRequest.getEmail()).isPresent()) {
             return new RegistrationResponse(false, "Email is already taken", registrationRequest);
         }
         saveUser(registrationRequest);
@@ -227,7 +227,7 @@ public class UserServiceImpl implements UserService {
             }
             userRepository.save(u);
             log.info("Updated user: {}", u);
-            u.getRole().forEach(role -> role.getUser().clear());
+            //u.getRole().forEach(role -> role.getUser().clear());
         });
         return user;
     }
@@ -236,7 +236,7 @@ public class UserServiceImpl implements UserService {
     public Optional<User> deleteUser(Long id) {
         Optional<User> user = userRepository.findById(id);
         user.ifPresent(u -> {
-            u.getRole().clear();
+//            u.getRole().clear();
             userRepository.delete(u);
             log.info("User deleted: {}", u);
         });

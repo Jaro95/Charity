@@ -1,16 +1,15 @@
 package pl.coderslab.charity.domain.user;
 
-import pl.coderslab.charity.infrastructure.security.JWT.UserLoginRequest;
-
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface UserService {
 
     Optional<User> findByEmail(String email);
     Optional<User> findByToken(String token);
     void saveUser(RegistrationRequest user);
-    void updateUser(User user, String password);
+    void updatePasswordUser(User user, String password);
     void updateUser(User user);
     void sendRecoveryPasswordEmail(String email);
     void resetPassword(String email, String password);
