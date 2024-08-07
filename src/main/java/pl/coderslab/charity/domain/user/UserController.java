@@ -42,7 +42,7 @@ public class UserController {
     }
 
     @PostMapping("/recovery/password")
-    public ResetPasswordCheckTokenResponse postRecoveryPassword(@RequestBody @Valid ResetPasswordRequest resetPasswordRequest) {
+    public ResetPasswordResponse postRecoveryPassword(@RequestBody @Valid ResetPasswordRequest resetPasswordRequest) {
         return userService.resetPassword(resetPasswordRequest);
     }
 

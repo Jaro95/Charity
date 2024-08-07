@@ -163,17 +163,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResetPasswordCheckTokenResponse resetPassword(ResetPasswordRequest resetPasswordRequest) {
+    public ResetPasswordResponse resetPassword(ResetPasswordRequest resetPasswordRequest) {
         Optional<RecoveryPassword> recoveryPassword = recoveryPasswordRepository.findByTokenRecoveryPassword(resetPasswordRequest.token());
 
         if (recoveryPassword.isEmpty()) {
-            return new ResetPasswordCheckTokenResponse(false, "Token is invalid");
+            return new ResetPasswordResponse(false, "Token is invalid");
         }
         if (!resetPasswordRequest.password().equals(resetPasswordRequest.repeatPassword())) {
-            return new ResetPasswordCheckTokenResponse(false, "Passwords are not the same");
+            return new ResetPasswordResponse(false, "Passwords are not the same");
         }
         resetPassword(recoveryPassword.get().getEmail(), resetPasswordRequest.password());
-        return new ResetPasswordCheckTokenResponse(true, "The password has been changed");
+        return new ResetPasswordResponse(true, "The password has been changed");
     }
 
     @Override

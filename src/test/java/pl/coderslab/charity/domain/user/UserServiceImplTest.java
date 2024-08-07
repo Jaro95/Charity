@@ -265,39 +265,45 @@ class UserServiceImplTest {
     @Test
     void testResetPasswordInvalidToken() {
         ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest("invalidToken", "Testy123!", "Testy123!");
-        ResetPasswordCheckTokenResponse resetPasswordCheckTokenResponse = new ResetPasswordCheckTokenResponse(false, "Token is invalid");
+
+        ResetPasswordResponse resetPasswordResponse = new ResetPasswordResponse(false, "Token is invalid");
         when(recoveryPasswordRepository.findByTokenRecoveryPassword(resetPasswordRequest.token())).thenReturn(Optional.empty());
 
-        ResetPasswordCheckTokenResponse validResetPassword = userService.resetPassword(resetPasswordRequest);
+
+        ResetPasswordResponse validResetPassword = userService.resetPassword(resetPasswordRequest);
 
         assertNotNull(validResetPassword);
-        assertEquals(resetPasswordCheckTokenResponse, validResetPassword);
+        assertEquals(resetPasswordResponse, validResetPassword);
     }
 
     @Test
     void testResetInvalidPassword() {
         ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest("invalidToken", "Testy1", "Testy123!");
-        ResetPasswordCheckTokenResponse resetPasswordCheckTokenResponse = new ResetPasswordCheckTokenResponse(false, "Passwords are not the same");
+
+        ResetPasswordResponse resetPasswordResponse = new ResetPasswordResponse(false, "Passwords are not the same");
         when(recoveryPasswordRepository.findByTokenRecoveryPassword(resetPasswordRequest.token())).thenReturn(Optional.of(getRecoveryPassword()));
 
-        ResetPasswordCheckTokenResponse validResetPassword = userService.resetPassword(resetPasswordRequest);
+
+        ResetPasswordResponse validResetPassword = userService.resetPassword(resetPasswordRequest);
 
         assertNotNull(validResetPassword);
-        assertEquals(resetPasswordCheckTokenResponse, validResetPassword);
+        assertEquals(resetPasswordResponse, validResetPassword);
     }
 
     @Test
     void testResetPasswordCorrectData() {
         ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest("invalidToken", "Testy123!", "Testy123!");
-        ResetPasswordCheckTokenResponse resetPasswordCheckTokenResponse = new ResetPasswordCheckTokenResponse(true, "The password has been changed");
+
+        ResetPasswordResponse resetPasswordResponse = new ResetPasswordResponse(true, "The password has been changed");
         when(recoveryPasswordRepository.findByTokenRecoveryPassword(resetPasswordRequest.token())).thenReturn(Optional.of(getRecoveryPassword()));
         when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
         when(recoveryPasswordRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(getRecoveryPassword()));
 
-        ResetPasswordCheckTokenResponse validResetPassword = userService.resetPassword(resetPasswordRequest);
+
+        ResetPasswordResponse validResetPassword = userService.resetPassword(resetPasswordRequest);
 
         assertNotNull(validResetPassword);
-        assertEquals(resetPasswordCheckTokenResponse, validResetPassword);
+        assertEquals(resetPasswordResponse, validResetPassword);
         verify(userRepository, times(1)).save(any(User.class));
         verify(recoveryPasswordRepository, times(1)).delete(any(RecoveryPassword.class));
     }

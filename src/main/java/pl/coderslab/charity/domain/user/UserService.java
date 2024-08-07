@@ -22,7 +22,7 @@ public interface UserService {
     ActivateUserResponse activateUser(ActivateUserRequest activateUserRequest);
     EmailCheckEmailResponse resetPasswordCheckEmail(String email);
     ResetPasswordCheckTokenResponse resetPasswordCheckToken(ResetPasswordCheckTokenRequest resetPasswordCheckTokenRequest);
-    ResetPasswordCheckTokenResponse resetPassword(ResetPasswordRequest resetPasswordRequest);
+    ResetPasswordResponse resetPassword(ResetPasswordRequest resetPasswordRequest);
     Optional<User> updateUser(Long id, UserRequest userRequest);
     Optional<User> deleteUser(Long id);
 }

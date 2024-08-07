@@ -52,10 +52,6 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.PUT, "/api/users/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.DELETE, "/api/users/**").hasRole("SUPER_ADMIN")
                                 //.requestMatchers("/**").permitAll()
-//                        .requestMatchers("/**", "/charity/login", "/charity/registration").permitAll()
-//                        .requestMatchers("/charity/**").hasAnyRole("USER", "ADMIN", "SUPER_ADMIN")
-//                        .requestMatchers("/charity/admin/**").hasAnyRole("ADMIN", "SUPER_ADMIN")
-//                        .requestMatchers("/images/**", "/css/**", "/js/**", "/WEB-INF/views/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .userDetailsService(userDetailsService)
@@ -72,23 +68,6 @@ public class SecurityConfig {
                         .addLogoutHandler(logoutHandler)
                         .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext()
                         ));
-//                .formLogin(form -> form
-//                        .loginPage("/charity/login")
-//                        .failureHandler(customAuthenticationFailureHandler())
-//                        .defaultSuccessUrl("/charity/validate", true)
-//                )
-//                .logout(logout -> logout
-//                        .logoutUrl("/charity/donation/logout")
-//                        .logoutSuccessUrl("/charity")
-//                        .invalidateHttpSession(true)
-//                        .deleteCookies("JSESSIONID")
-//                        .permitAll()
-//                        .logoutRequestMatcher(new AntPathRequestMatcher("/charity/donation/logout", "GET"))
-//                )
-
-//                .securityContext(context -> context
-//                        .requireExplicitSave(false)
-//                );
 
         return http.build();
     }
