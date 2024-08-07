@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/rest/institutions")
+@RequestMapping("/api/institutions")
 public class InstitutionController {
 
     private final InstitutionService institutionService;

@@ -13,7 +13,6 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.openMocks;
 
 @ExtendWith(MockitoExtension.class)
 class CategoryServiceTest {
@@ -78,6 +77,7 @@ class CategoryServiceTest {
         when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
 
         Optional<Category> deleteCategory = categoryService.deleteCategory(1L);
+
         assertTrue(deleteCategory.isPresent());
         verify(categoryRepository,times(1)).delete(any(Category.class));
     }

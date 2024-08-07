@@ -6,25 +6,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pl.coderslab.charity.domain.category.Category;
 import pl.coderslab.charity.domain.category.CategoryRepository;
 import pl.coderslab.charity.domain.dataFactory.TestDataFactory;
 import pl.coderslab.charity.domain.institution.Institution;
 import pl.coderslab.charity.domain.institution.InstitutionRepository;
-import pl.coderslab.charity.domain.user.User;
 import pl.coderslab.charity.domain.user.UserRepository;
-import pl.coderslab.charity.infrastructure.security.Role;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.openMocks;
 
 @ExtendWith(MockitoExtension.class)
 class DonationServiceTest {
@@ -39,7 +31,7 @@ class DonationServiceTest {
     private UserRepository userRepository;
     @InjectMocks
     private DonationService donationService;
-    private Institution institution = TestDataFactory.createInstitution();
+    private final Institution institution = TestDataFactory.createInstitution();
     private Donation donation;
     private DonationAddRequest donationAddRequest;
     private DonationUpdateRequest donationUpdateRequest;

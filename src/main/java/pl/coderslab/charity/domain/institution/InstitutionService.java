@@ -27,7 +27,7 @@ public class InstitutionService {
                     .name(institutionAddRequest.name())
                     .description(institutionAddRequest.description())
                     .build());
-            log.info("Added new institution:\n{}\n{}", institutionAddRequest.name(), institutionAddRequest.description());
+            log.info("Added new institution: {}", institutionAddRequest);
         return institutionAddRequest;
     }
 

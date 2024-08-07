@@ -62,11 +62,11 @@ public class DonationControllerREST {
 
     @GetMapping("/profile")
     public String getProfile(Model model, @AuthenticationPrincipal CurrentUser currentUser) {
-        User user = userRepository.findById(currentUser.getUser().getId()).get();
+        User user = userRepository.findById(currentUser.getUser().getId()).orElseThrow(() -> new RuntimeException("Not found user"));
         model.addAttribute("name", user.getName());
         model.addAttribute("lastName", user.getLastName());
         model.addAttribute("email", user.getEmail());
-        model.addAttribute("donation", donationRepository.countDonationsUser(user.getId()).get());
+        model.addAttribute("donation", donationRepository.countDonationsUser(user.getId()).orElseThrow());
         return "application/profile";
     }
 
@@ -151,7 +151,7 @@ public class DonationControllerREST {
         donation.setUser(currentUser.getUser());
         donationRepository.save(donation);
         redirectAttributes.addFlashAttribute("message", "Edycja przebiegła pomyslnie");
-        log.info("Updated donation: {}", donation.toString());
+        log.info("Updated donation: {}", donation);
         return "redirect:/charity/donation/userDonation";
     }
 

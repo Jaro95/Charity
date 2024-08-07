@@ -27,7 +27,7 @@ public class CategoryService {
         categoryRepository.save(Category.builder()
                 .name(categoryAddRequest.name())
                 .build());
-        log.info("Added new category:\n{}\n{}", categoryAddRequest.name());
+        log.info("Added new category: {}", categoryAddRequest.name());
         return categoryAddRequest;
     }
 
@@ -38,7 +38,7 @@ public class CategoryService {
             Optional.ofNullable(categoryRequest.name()).ifPresent(name ->
                     c.setName(c.getName().equals(name) ? c.getName() : name));
             categoryRepository.save(c);
-            log.info("Updated category:\n {}", c);
+            log.info("Updated category: {}", c);
         });
         return category;
     }

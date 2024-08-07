@@ -22,14 +22,10 @@ class InstitutionServiceTest {
     @InjectMocks
     private InstitutionService institutionService;
     private Institution institution;
-    private InstitutionAddRequest institutionAddRequest;
-    private InstitutionRequest institutionRequest;
 
     @BeforeEach
     void setUp() {
         institution = TestDataFactory.createInstitution();
-        institutionAddRequest = new InstitutionAddRequest("Institution 2", "Description 2");
-        institutionRequest = new InstitutionRequest("Updated Institution", "Updated Description");
     }
 
     @Test
@@ -55,6 +51,7 @@ class InstitutionServiceTest {
 
     @Test
     void testAddInstitution() {
+        InstitutionAddRequest institutionAddRequest = new InstitutionAddRequest("Institution 2", "Description 2");
         institutionService.addInstitution(institutionAddRequest);
 
         verify(institutionRepository, times(1)).save(any(Institution.class));
@@ -62,6 +59,7 @@ class InstitutionServiceTest {
 
     @Test
     void testUpdateInstitution() {
+        InstitutionRequest institutionRequest = new InstitutionRequest("Updated Institution", "Updated Description");
         when(institutionRepository.findById(1L)).thenReturn(Optional.of(institution));
 
         Optional<Institution> updateInstitution = institutionService.updateInstitution(1L, institutionRequest);

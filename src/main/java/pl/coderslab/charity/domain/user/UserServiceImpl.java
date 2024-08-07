@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.BindingResult;
 import pl.coderslab.charity.infrastructure.security.Role;
 import pl.coderslab.charity.infrastructure.security.RoleRepository;
 
@@ -39,7 +38,7 @@ public class UserServiceImpl implements UserService {
                 .email(user.getEmail())
                 .name(user.getFirstName())
                 .lastName(user.getLastName())
-                .role(new HashSet<>(Arrays.asList(userRole)))
+                .role(new HashSet<>(Collections.singletonList(userRole)))
                 .password(passwordEncoder.encode(user.getPassword()))
                 .createdAccount(LocalDateTime.now())
                 .enabled(false)
@@ -70,7 +69,7 @@ public class UserServiceImpl implements UserService {
                 .localDateTime(LocalDateTime.now())
                 .build());
         Optional<RecoveryPassword> recoveryPassword = recoveryPasswordRepository.findByEmail(email);
-        emailService.sendResetPassword(email, recoveryPassword.get().getTokenRecoveryPassword());
+        emailService.sendResetPassword(email, recoveryPassword.orElseThrow().getTokenRecoveryPassword());
     }
 
     @Override
@@ -80,7 +79,7 @@ public class UserServiceImpl implements UserService {
             user.get().setPassword(passwordEncoder.encode(password));
             userRepository.save(user.get());
             deleteOccurrenceEmailInListReset(email);
-            log.info("User {} changed password", user.get().getEmail());
+            changePasswordInformation(user.get());
         });
     }
 
@@ -90,50 +89,32 @@ public class UserServiceImpl implements UserService {
         user.ifPresent(e -> {
             user.get().setPassword(passwordEncoder.encode(password));
             userRepository.save(user.get());
-            log.info("User {} changed password", user.get().getEmail());
+            changePasswordInformation(user.get());
         });
     }
 
-    @Override
-    public List<User> getAllUsers() {
-        List<User> users = userRepository.findAll();
-//        for (User user : users) {
-//            user.getRole().forEach(role -> role.getUser().clear());
-//        }
-        return users;
+    public void changePasswordInformation(User user) {
+        log.info("User {} changed password", user.getEmail());
     }
 
     @Override
     public List<User> getUsersWithRole(String role) {
-        List<User> users = userRepository.withRole(role);
-//        for (User user : users) {
-//            for (Role roleUser : user.getRole()) {
-//                roleUser.getUser().clear();
-//            }
-//        }
-        return users;
+        return userRepository.withRole(role);
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
     @Override
     public List<User> getOnlyUsers() {
-        List<User> users = userRepository.onlyUsers();
-        for (User user : users) {
-            for (Role role : user.getRole()) {
-                role.getUser().clear();
-            }
-        }
-        return users;
+        return userRepository.onlyUsers();
     }
 
     @Override
     public List<User> getOnlyAdmins() {
-        List<User> users = userRepository.onlyAdmins();
-        for (User user : users) {
-            for (Role role : user.getRole()) {
-                role.getUser().clear();
-            }
-        }
-        return users;
+        return userRepository.onlyAdmins();
     }
 
     @Override
@@ -227,7 +208,6 @@ public class UserServiceImpl implements UserService {
             }
             userRepository.save(u);
             log.info("Updated user: {}", u);
-            //u.getRole().forEach(role -> role.getUser().clear());
         });
         return user;
     }
@@ -236,7 +216,7 @@ public class UserServiceImpl implements UserService {
     public Optional<User> deleteUser(Long id) {
         Optional<User> user = userRepository.findById(id);
         user.ifPresent(u -> {
-//            u.getRole().clear();
+            u.getRole().clear();
             userRepository.delete(u);
             log.info("User deleted: {}", u);
         });

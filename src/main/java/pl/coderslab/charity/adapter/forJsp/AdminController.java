@@ -32,7 +32,6 @@ import java.util.*;
 @Slf4j
 public class AdminController {
 
-  //  private final AdminService adminService;
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
     private final InstitutionRepository institutionRepository;
@@ -60,7 +59,7 @@ public class AdminController {
 
     @GetMapping("/user/update")
     public String getUpdateUser(@RequestParam Long id, Model model) {
-        User user = userRepository.findById(id).get();
+        User user = userRepository.findById(id).orElseThrow();
         model.addAttribute("user", user);
         model.addAttribute("userId", user.getId());
         model.addAttribute("userEmail", user.getEmail());
@@ -96,7 +95,7 @@ public class AdminController {
             redirectAttributes.addFlashAttribute("messageError", "Nie możesz usunąć samego siebie");
             return "redirect:/charity/admin";
         }
-        User user = userRepository.findById(id).get();
+        User user = userRepository.findById(id).orElseThrow();
         user.getRole().clear();
         userRepository.deleteById(id);
         redirectAttributes.addFlashAttribute("message", "Użytkownik usunięty pomyślnie");
@@ -105,7 +104,7 @@ public class AdminController {
 
     @GetMapping("/user/password")
     public String getEditPassword(@RequestParam Long id ,Model model) {
-        if (!id.describeConstable().isPresent()) {
+        if (id.describeConstable().isEmpty()) {
             return "redirect:/charity/admin";
         }
         model.addAttribute("id", id);
@@ -147,7 +146,7 @@ public class AdminController {
     @PostMapping("/category")
     public String postCategory(@RequestParam Long categoryId, @RequestParam String categoryName,
                                RedirectAttributes redirectAttributes) {
-        Category category = categoryRepository.findById(categoryId).get();
+        Category category = categoryRepository.findById(categoryId).orElseThrow();
         category.setName(categoryName);
         categoryRepository.save(category);
 
@@ -216,10 +215,10 @@ public class AdminController {
             model.addAttribute("errors", result.getAllErrors());
             return "admin/updateDonation";
         }
-        donation.setUser(donationRepository.findById(donation.getId()).get().getUser());
+        donation.setUser(donationRepository.findById(donation.getId()).orElseThrow().getUser());
         donationRepository.save(donation);
         redirectAttributes.addFlashAttribute("message", "Edycja przebiegła pomyslnie");
-        log.info("Updated donation: {}", donation.toString());
+        log.info("Updated donation: {}", donation);
         return "redirect:/charity/admin/donation";
     }
 
@@ -242,9 +241,8 @@ public class AdminController {
     @PostMapping("/institution")
     public String postInstitution(@RequestParam long institutionId, @RequestParam String institutionName,
                                   @RequestParam String institutionDescription,
-                                  Model model,
                                   RedirectAttributes redirectAttributes) {
-        Institution institution = institutionRepository.findById(institutionId).get();
+        Institution institution = institutionRepository.findById(institutionId).orElseThrow();
         institution.setName(institutionName);
         institution.setDescription(institutionDescription);
         institutionRepository.save(institution);

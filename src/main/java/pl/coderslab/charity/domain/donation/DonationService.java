@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import pl.coderslab.charity.domain.category.Category;
 import pl.coderslab.charity.domain.category.CategoryRepository;
 import pl.coderslab.charity.domain.institution.InstitutionRepository;
-import pl.coderslab.charity.domain.user.User;
 import pl.coderslab.charity.domain.user.UserRepository;
 
 import java.time.LocalDate;
@@ -26,17 +25,11 @@ public class DonationService {
     private final InstitutionRepository institutionRepository;
 
     public List<Donation> getAllDonations() {
-        List<Donation> donations = donationRepository.findAll();
-//        for (Donation donation : donations) {
-//            donation.getUser().getRole().forEach(role -> role.getUser().clear());
-//        }
-        return donations;
+        return donationRepository.findAll();
     }
 
     public Optional<Donation> getDonation(Long id) {
-        Optional<Donation> donation = donationRepository.findById(id);
-        donation.ifPresent(d -> d.getUser().getRole().forEach(role -> role.getUser().clear()));
-        return donation;
+        return donationRepository.findById(id);
     }
 
     public DonationAddRequest addDonation(DonationAddRequest donationAddRequest) {
@@ -58,7 +51,7 @@ public class DonationService {
                 .createdTime(LocalTime.now().withSecond(0).withNano(0))
                 .user(userRepository.findById(donationAddRequest.userId()).orElseThrow(IllegalArgumentException::new))
                 .build());
-        log.info("Added new donation:\n{}", donationAddRequest);
+        log.info("Added new donation: {}", donationAddRequest);
         return donationAddRequest;
     }
 
@@ -76,9 +69,9 @@ public class DonationService {
                 d.setCategory(categories.equals(d.getCategory()) ? d.getCategory() : categories);
             }
 
-            Optional.ofNullable(donationUpdateRequest.quantity()).ifPresent(quantity -> {
-                d.setQuantity(d.getQuantity() == quantity ? d.getQuantity() : quantity);
-            });
+            Optional.ofNullable(donationUpdateRequest.quantity()).ifPresent(quantity ->
+                d.setQuantity(d.getQuantity() == quantity ? d.getQuantity() : quantity)
+            );
 
             Optional.ofNullable(donationUpdateRequest.institutionId()).ifPresent(institutionID ->
                     d.setInstitution(d.getInstitution().getId() == institutionID ? d.getInstitution()
@@ -124,7 +117,6 @@ public class DonationService {
 
             donationRepository.save(d);
             log.info("Updated donation: {}", d);
-            //d.getUser().getRole().forEach(role -> role.getUser().clear());
         });
 
         return donation;
@@ -134,7 +126,7 @@ public class DonationService {
         Optional<Donation> donation = donationRepository.findById(id);
         donation.ifPresent(d -> {
             donationRepository.delete(d);
-            log.info("Deleted donation:\n{}", d);
+            log.info("Deleted donation: {}", d);
         });
         return donation;
     }
