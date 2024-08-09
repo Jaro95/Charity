@@ -18,7 +18,6 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @Builder
-@ToString
 public class Donation {
 
     @Id

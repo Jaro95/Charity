@@ -2,12 +2,12 @@ package pl.coderslab.charity.domain.user;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 public interface UserService {
 
     Optional<User> findByEmail(String email);
     Optional<User> findByToken(String token);
+    Optional<User> findById(Long id);
     void saveUser(RegistrationRequest user);
     void updatePasswordUser(User user, String password);
     void updateUser(User user);

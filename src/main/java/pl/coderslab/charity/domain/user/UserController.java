@@ -16,7 +16,12 @@ public class UserController {
         return new UserListResponse(userService.getAllUsers());
     }
 
-    @GetMapping("/{role}")
+    @GetMapping("/{id}")
+    public UserResponse getUsersWithRole(@PathVariable Long id) {
+        return new UserResponse(userService.findById(id));
+    }
+
+    @GetMapping("/role/{role}")
     public UserListResponse getUsersWithRole(@PathVariable String role) {
         return new UserListResponse(userService.getUsersWithRole(role));
     }

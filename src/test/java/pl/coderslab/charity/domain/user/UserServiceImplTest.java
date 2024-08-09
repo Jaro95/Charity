@@ -29,6 +29,8 @@ class UserServiceImplTest {
     private BCryptPasswordEncoder passwordEncoder;
     @Mock
     private RecoveryPasswordRepository recoveryPasswordRepository;
+    @Mock
+    private EmailService emailService;
 
     @InjectMocks
     private UserServiceImpl userService;
@@ -346,5 +348,14 @@ class UserServiceImplTest {
 
     public RecoveryPassword getRecoveryPassword() {
         return new RecoveryPassword(1L, user.getEmail(), "Token", LocalDateTime.now());
+    }
+
+    @Test
+    void findById() {
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+
+        userService.findById(1L);
+
+        verify(userRepository, times(1)).findById(1L);
     }
 }
