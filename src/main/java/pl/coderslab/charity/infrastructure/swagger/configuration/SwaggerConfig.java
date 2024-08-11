@@ -24,8 +24,7 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
         description = "JWT auth description",
         scheme = "bearer",
         type = SecuritySchemeType.HTTP,
-        bearerFormat = "JWT",
-        in = SecuritySchemeIn.HEADER
+        bearerFormat = "JWT"
 )
 public class SwaggerConfig {
 
