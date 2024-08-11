@@ -41,7 +41,17 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
                                 .requestMatchers("/login", "/api/users/registration","/api/users/verification",
-                                        "/api/users/recovery/**").permitAll()
+                                        "/api/users/recovery/**",
+                                        "/v2/api-docs",
+                                        "/v3/api-docs",
+                                        "/v3/api-docs/**",
+                                        "/configuration/ui",
+                                        "/configuration/security",
+                                        "/webjars/**",
+                                        "/swagger-resources",
+                                        "/swagger-resources/**",
+                                        "/swagger-ui/**",
+                                        "/swagger-ui.html").permitAll()
                                 .requestMatchers(HttpMethod.DELETE, "/api/categories/**").hasRole("SUPER_ADMIN")
                                 .requestMatchers(HttpMethod.POST, "/api/categories/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.PUT, "/api/categories/**").hasRole("ADMIN")

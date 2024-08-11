@@ -1,5 +1,6 @@
 package pl.coderslab.charity.domain.donation;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/api/donations")
+@Tag(name = "Donation")
 public class DonationsController {
 
     private final DonationService donationService;
