@@ -1,0 +1,442 @@
+body, h1, h2, h3, h4, h5, h6 {
+    font-family: "Raleway", sans-serif
+}
+
+body, html {
+    margin: 0;
+    height: 96.35%;
+    line-height: 1.8;
+    background-color: #f1f1f1;
+    /*overflow: hidden;*/
+}
+
+/*Full height image header */
+.bgimg-1 {
+    background-position: center;
+    background-size: cover;
+    background-image: url("/images/mainPeople.jpg");
+    min-height: 100.67%;
+}
+
+.w3-bar .w3-button {
+    padding: 16px;
+}
+
+.contact {
+    height: 100%;
+}
+
+.cantact-info {
+    margin-top: 50px;
+}
+
+.contact-info {
+    margin-top: 50px;
+    margin-bottom: 0px ;
+}
+
+.contact-details {
+    margin: 25px;
+    border-collapse: collapse;
+}
+
+.input-contact {
+    padding: 8px;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    width: 30%;
+    resize: none;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.centered-block {
+    width: 50%; /* lub dowolna inna szerokość */
+    margin: 0 auto;
+    background-color: lightgrey; /* dla lepszej widoczności */
+}
+
+.form-grid {
+    display: grid;
+    position: relative;
+    gap: 15px;
+    vertical-align: middle;
+
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+}
+
+label {
+    margin-right: 5px;
+}
+
+.container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.registration-form {
+    display: grid;
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 5px;
+}
+
+input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+.main-h3 {
+    color: lightgrey;
+    padding: 30px;
+}
+
+.main-registration {
+    margin-top: 120px;
+    padding: 48px
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #333;
+    color: white;
+    padding: 10px 0;
+    z-index: 1000;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+}
+
+.navbar ul li {
+    margin: 0 15px;
+}
+
+.navbar ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.content {
+    padding-top: 60px; /* Dodaj odpowiednią ilość paddingu, aby uwzględnić wysokość nawigacji */
+    text-align: center;
+}
+
+main {
+    padding: 20px;
+}
+
+.alert {
+    display: flex;
+    resize: none;
+    padding: .75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px;
+    border-radius: .35rem;
+    align-items: center;
+    justify-content: center;
+    margin-right: 35%;
+    margin-left: 35%;
+}
+
+.alert-activity-edit {
+    display: flex;
+    resize: none;
+    padding: .75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px;
+    border-radius: .35rem;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1%;
+    margin-left: 1%;
+}
+
+
+
+    .alert-success {
+    color: #0f6848;
+    background-color: #d2f4e8;
+    border-color: #bff0de
+}
+
+.alert-error {
+    color: black;
+    background-color: red;
+    border-color: darkred;
+}
+
+.alert-success hr {
+    border-top-color: #aaebd3
+}
+
+.alert-success .alert-link {
+    color: #093b29
+}
+
+#searchBox {
+    display: block;
+    margin: 20px auto;
+    width: 300px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+table.dataTable thead th {
+    padding: 10px;
+    background-color: #f2f2f2;
+}
+
+table.dataTable tbody td {
+    padding: 10px;
+    text-align: center;
+}
+
+.dropdown-menu {
+    display: none; /* Ukryj menu rozwijane */
+    position: absolute;
+    top: 60px; /* Pozycjonuj menu tuż pod nawigacją */
+    right: 0px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    width: 150px; /* Szerokość menu */
+}
+
+.dropdown-item {
+    padding: 10px 20px;
+    cursor: pointer;
+    color: #333;
+    text-align: center; /* Wycentruj tekst */
+
+}
+
+.dropdown-item:hover {
+    background-color: #f0f0f0;
+}
+
+
+.dropdown-notification {
+    display: none; /* Ukryj menu rozwijane */
+    position: absolute;
+    top: 60px; /* Pozycjonuj menu tuż pod nawigacją */
+    right: 60px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    width: 400px; /* Szerokość menu */
+}
+
+
+.dropdown-activities {
+    display: none; /* Ukryj menu rozwijane */
+    position: absolute;
+    top: 60px; /* Pozycjonuj menu tuż pod nawigacją */
+    right: 300px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    width: 200px; /* Szerokość menu */
+}
+
+a {
+    text-decoration: none;
+}
+.social-icon {
+    position: fixed;
+    bottom: 20px;
+    left: 20px; /
+}
+#suggestions {
+    list-style-type: none;
+    padding: 0;
+    text-align: center;
+    justify-content: center;
+    margin-right: 35%;
+    margin-left: 35%;
+}
+#suggestions li {
+    padding: 8px;
+    background-color: #f1f1f1;
+    margin-bottom: 2px;
+    cursor: pointer;
+}
+.edit-about-user {
+    width: 330px;
+    height: 110px;
+}
+.user-information {
+    padding-top:128px;
+    width: 25%;
+    float: left;
+}
+
+.change-data {
+    margin-left: 0;
+    margin-right: 0;
+}
+.w3-bar-block .w3-bar-item {padding: 16px}
+
+.nav-chat {
+        top: 60px;
+        height: 94%;
+        margin-left:0px
+}
+.person {
+    height: 94%;
+    margin-left:300px;
+    position: relative;
+    top:60px;
+}
+
+.message-start {
+    top:60px;
+}
+
+.main-height {
+    height: 86%;
+}
+.footer-height {
+    height:12.4%;
+}
+
+.chat-wrapper {
+
+
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.chat-container {
+
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    /*padding-bottom: 0px; !* Dodanie przestrzeni dla input-container *!*/
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+.chat-bubble {
+    align-self: flex-start;
+    max-width: 60%; /* Maksymalna szerokość dymku */
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    word-wrap: break-word; /* Zawijanie tekstu */
+    white-space: normal; /* Zawijanie tekstu */
+   /* Ustawia każdy dymek w osobnej linii */
+    overflow-wrap: break-word; /* Zawijanie tekstu */
+    margin-left: 10px; /* Dodatkowy margines dla dymków po lewej */
+    margin-right: 10px; /* Dodatkowy margines dla dymków po prawej */
+}
+
+.user1 {
+    background-color: #d1e7dd;
+    align-self: flex-start;
+
+}
+
+.user2 {
+    background-color: #f8d7da;
+    align-self: flex-end;
+}
+
+.chat-bubble p {
+    margin: 0;
+    font-size: 16px;
+}
+
+.input-container {
+    position: fixed;
+    bottom: 0;
+    width: 81%;
+    display: flex;
+    justify-content: center;
+    background-color: #f0f0f0;
+    padding: 10px 0;
+    box-sizing: border-box;
+}
+
+.chat-input {
+    width: 75%;
+    padding: 10px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+
+.send-button {
+    margin-left: 10px;
+    padding: 10px 20px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    resize: none;
+    overflow: hidden;
+    max-height: 100px; /* Limit the height to prevent excessive growth */
+}
+
