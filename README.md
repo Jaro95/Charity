@@ -24,13 +24,15 @@ The Charity Donation REST API is a web service designed to facilitate the donati
 
 - **Spring Boot 3+**: Backend framework for creating the REST API.
 - **Java 17+**: Programming language used for development.
-- **Spring Security**: For authentication and authorization.
+- **Spring Security**: Provides authentication and role-based authorization.
 - **Spring Data JPA**: For data persistence.
 - **MySQL**: Database system used for storing data.
 - **Flyway**: For database migration.
 - **Docker**: For containerizing the application and database.
 - **Spring Boot Mail**: For email functionalities.
 - **Hibernate**: ORM framework for database operations.
+- **Swagger**: Utilized to generate interactive API documentation, simplifying API usage for developers.
+- **JUnit & Mockito**: Developed unit tests to ensure code quality and reliability, using Mockito for mocking dependencies in tests. 
 
 ## Installation
 
